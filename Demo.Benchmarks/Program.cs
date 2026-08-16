@@ -1,10 +1,12 @@
-﻿namespace Demo.Benchmarks
+﻿using BenchmarkDotNet.Running;
+
+namespace Demo.Benchmarks
 {
 	internal class Program
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello, World!");
+			BenchmarkRunner.Run<SerializationBenchmark>();
 		}
 	}
 }

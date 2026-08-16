@@ -1,2 +1,3 @@
 obj
 bin
+Demo.Benchmarks/BenchmarkDotNet.Artifacts
