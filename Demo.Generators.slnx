@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Demo.App/Demo.App.csproj" />
+  <Project Path="Demo.Benchmarks/Demo.Benchmarks.csproj" />
+  <Project Path="Demo.Generators/Demo.Generators.csproj" />
+</Solution>
