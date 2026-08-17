@@ -1,3 +1,5 @@
+using Demo.Generators;
+
 namespace Demo.App
 {
   [GenerateSerializer]

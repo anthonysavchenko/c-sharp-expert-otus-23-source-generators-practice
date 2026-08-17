@@ -1,30 +1,7 @@
-using System.Collections.Generic;
+namespace Demo.Generators;
 
-namespace Demo.Generators
+internal class SerializableProperty(string name, string typeName)
 {
-  internal class SerializableProperty
-  {
-    public string Name { get; }
-    public string TypeName { get; }
-
-    public SerializableProperty(string name, string typeName)
-    {
-      Name = name;
-      TypeName = typeName;
-    }
-  }
-
-  internal class SerializableType
-  {
-    public string Namespace { get; }
-    public string TypeName { get; }
-    public IReadOnlyList<SerializableProperty> Properties { get; }
-
-    public SerializableType(string @namespace, string typeName, IReadOnlyList<SerializableProperty> properties)
-    {
-      Namespace = @namespace;
-      TypeName = typeName;
-      Properties = properties;
-    }
-  }
+  public string Name { get; } = name;
+  public string TypeName { get; } = typeName;
 }
