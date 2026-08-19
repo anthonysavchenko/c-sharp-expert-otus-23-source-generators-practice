@@ -2,6 +2,6 @@ namespace Demo.Generators;
 
 internal class SerializableProperty(string name, string typeName)
 {
-  public string Name { get; } = name;
-  public string TypeName { get; } = typeName;
+  internal string Name { get; } = name;
+  internal string TypeName { get; } = typeName;
 }
