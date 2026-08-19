@@ -4,4 +4,4 @@
 ### New Rules
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-SG0001 | GenerationSerializer | Error | Unsupported property type
+SG0001 | SerializerGenerator | Error | Unsupported property type

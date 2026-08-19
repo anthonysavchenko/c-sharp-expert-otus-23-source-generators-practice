@@ -10,26 +10,23 @@ internal static class UnsupportedProperty
     SerializableType type
   )
   {
-    // var location = member.Locations.FirstOrDefault();
-
     var diagnostic = Diagnostic.Create(
-      UnsupportedTypeRule,
-      // location,
-      null,
-      prop.Name,
+      UnsupportedPropertyDescriptor,
+      location: null,
       type.TypeName,
-      prop.TypeName
+      prop.TypeName,
+      prop.Name
     );
 
     context.ReportDiagnostic(diagnostic);
   }
 
-  private static readonly DiagnosticDescriptor UnsupportedTypeRule = new(
-    "SG0001",
-    "Unsupported property type",
-    "Property '{0}' in type '{1}' has unsupported type for binary serialization",
-    "GenerationSerializer",
-    DiagnosticSeverity.Error,
+  private static readonly DiagnosticDescriptor UnsupportedPropertyDescriptor = new(
+    id: "SG0001",
+    title: "Unsupported property type",
+    messageFormat: "Property '{2}' in type '{0}' has unsupported type for binary serialization: '{1}'",
+    category: "SerializerGenerator",
+    defaultSeverity: DiagnosticSeverity.Error,
     isEnabledByDefault: true
   );
 }

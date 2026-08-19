@@ -15,12 +15,12 @@ public class SerializerGenerator : IIncrementalGenerator
     ));
 
     IncrementalValuesProvider<SerializableType?> serializableType = context.SyntaxProvider
-        .ForAttributeWithMetadataName(
-          SourceCodeGenerator.GetAttributeFullName(),
-          predicate: static (s, _) => true,
-          transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx.SemanticModel, ctx.TargetNode)
-        )
-        .Where(static m => m is not null);
+      .ForAttributeWithMetadataName(
+        SourceCodeGenerator.GetAttributeFullName(),
+        predicate: static (s, _) => true,
+        transform: static (ctx, _) => GetSemanticTargetForGeneration(ctx.SemanticModel, ctx.TargetNode)
+      )
+      .Where(static m => m is not null);
 
     context.RegisterSourceOutput(serializableType, static (spc, source) => Execute(spc, source));
   }
@@ -42,11 +42,8 @@ public class SerializerGenerator : IIncrementalGenerator
     {
       if (member.DeclaredAccessibility != Accessibility.Public) continue;
       if (member.GetMethod == null) continue;
-      if (!IsSupportedType(member.Type)) continue;
 
-      var canonicalName = GetCanonicalTypeName(member.Type);
-
-      props.Add(new SerializableProperty(member.Name, canonicalName));
+      props.Add(new SerializableProperty(member.Name, member.Type.ToDisplayString()));
     }
 
     var ns = classSymbol.ContainingNamespace.IsGlobalNamespace
@@ -55,28 +52,6 @@ public class SerializerGenerator : IIncrementalGenerator
 
     return new SerializableType(ns, classSymbol.Name, props);
   }
-
-  private static bool IsSupportedType(ITypeSymbol type) => type.SpecialType switch
-  {
-    SpecialType.System_Int32 or
-    SpecialType.System_Int64 or
-    SpecialType.System_Double or
-    SpecialType.System_Boolean or
-    SpecialType.System_String
-      => true,
-
-    _ => false,
-  };
-
-  private static string GetCanonicalTypeName(ITypeSymbol type) => type.SpecialType switch
-  {
-    SpecialType.System_Int32 => "int",
-    SpecialType.System_Int64 => "long",
-    SpecialType.System_Double => "double",
-    SpecialType.System_Boolean => "bool",
-    SpecialType.System_String => "string",
-    _ => type.ToDisplayString(),
-  };
 
   static void Execute(SourceProductionContext context, SerializableType? serializableType)
   {

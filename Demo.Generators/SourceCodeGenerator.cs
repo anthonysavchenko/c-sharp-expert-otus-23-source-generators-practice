@@ -45,9 +45,9 @@ public static class SourceCodeGenerator
     sb.AppendLine("    using (var writer = new BinaryWriter(stream, System.Text.Encoding.UTF8, true))");
     sb.AppendLine("    {");
 
-    foreach (var prop in type.Properties)
+    foreach (var property in type.Properties)
     {
-      if (!TryAppendWriteForProperty(sb, prop)) UnsupportedProperty.Report(context, prop, type);
+      if (!TryAppendProperty(sb, property)) UnsupportedProperty.Report(context, property, type);
     }
 
     sb.AppendLine("    }");
@@ -59,29 +59,29 @@ public static class SourceCodeGenerator
     return sourceCode;
   }
 
-  private static bool TryAppendWriteForProperty(StringBuilder sb, SerializableProperty prop)
+  private static bool TryAppendProperty(StringBuilder sb, SerializableProperty property)
   {
-    switch (prop.TypeName)
+    switch (property.TypeName)
     {
       case "int":
       case "long":
       case "double":
       case "bool":
-        sb.AppendLine("      writer.Write(this." + prop.Name + ");");
+        sb.AppendLine("      writer.Write(this." + property.Name + ");");
         return true;
       case "string":
-        sb.AppendLine("      if (this." + prop.Name + " == null)");
+        sb.AppendLine("      if (this." + property.Name + " == null)");
         sb.AppendLine("      {");
         sb.AppendLine("        writer.Write(-1);");
         sb.AppendLine("      }");
         sb.AppendLine("      else");
         sb.AppendLine("      {");
-        sb.AppendLine("        var bytes = System.Text.Encoding.UTF8.GetBytes(this." + prop.Name + ");");
+        sb.AppendLine("        var bytes = System.Text.Encoding.UTF8.GetBytes(this." + property.Name + ");");
         sb.AppendLine("        writer.Write(bytes.Length);");
         sb.AppendLine("      }");
         return true;
       default:
-        sb.AppendLine("      // Unsupported type: " + prop.TypeName);
+        sb.AppendLine("      // Unsupported type: " + property.TypeName);
         return false;
     }
   }
